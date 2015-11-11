@@ -111,9 +111,9 @@ bool WFEHashMap::remove(char* key) {
 			local = expandTable(local, pos, node, R);
 		} else if (!isArrayNode(node)) {
 				DEBUG("is NOT array node");
-				if (hashEqual(dynamic_cast<DataNode*>(node)->getHash(), dynamic_cast<DataNode*>(insertThis)->getHash(), keySize)) {
+				if (hashEqual(dynamic_cast<DataNode*>(node)->getHash(), hash, keySize)) {
 					DEBUG("Hash equal");
-					if (atomic_compare_exchange_weak(dynamic_cast<ArrayNode*>(local)->array + pos, &node, nullptr)) {
+					if (atomic_compare_exchange_weak(dynamic_cast<ArrayNode*>(local)->array + pos, &node, NULL_NODE)) {
 						DEBUG("CAS Successful. Deleting node");
 						delete node;
 						return true;
@@ -136,6 +136,7 @@ bool WFEHashMap::remove(char* key) {
 				local = node;
 		}
 	}
+	return false;
 }
 
 int* WFEHashMap::get(char* key) {
