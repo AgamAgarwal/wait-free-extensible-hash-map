@@ -18,6 +18,7 @@ public:
 	WFEHashMap(int _keySize);
 
 	bool put(char* key, int value);
+	int* get(char* key);
 };
 
 #endif

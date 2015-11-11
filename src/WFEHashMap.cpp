@@ -90,3 +90,25 @@ bool WFEHashMap::put(char* key, int value) {
 
 	return false;
 }
+
+int* WFEHashMap::get(char* key) {
+	char* hash = hashKey(key);
+	Node* local = head;
+
+	for (int R = 0; R < keySize; R += 1) {
+		int pos = (int) hash[R];
+		Node* node = getNode(local, pos);
+		if (isArrayNode(node)) {
+			local = node;
+		} else {
+			DataNode* dataNode = dynamic_cast<DataNode*>(node);
+			if ((dataNode != nullptr) && hashEqual(dataNode->getHash(), hash, keySize)) {
+				return &(dataNode->value);
+			} else {
+				return nullptr;
+			}
+		}
+	}
+
+	return nullptr;
+}
