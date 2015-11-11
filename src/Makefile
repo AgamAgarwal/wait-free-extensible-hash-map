@@ -1,11 +1,14 @@
 CC=g++
-CFLAGS=-Wall -std=c++11 -g -DDEBUG_H
+CFLAGS=-Wall -std=c++11
 TARGET=main
 FILES=main.o utils.o WFEHashMap.o Node.o DataNode.o ArrayNode.o
 
 %: all
 
 all: $(TARGET)
+
+debug: CFLAGS += -g -DDEBUG_H
+debug: all
 
 $(TARGET): $(FILES)
 	$(CC) $(CFLAGS) $^ -o $@
