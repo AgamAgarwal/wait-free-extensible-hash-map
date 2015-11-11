@@ -90,3 +90,50 @@ bool WFEHashMap::put(char* key, int value) {
 
 	return false;
 }
+
+bool WFEHashMap::remove(char* key) {
+	char* hash = hashKey(key);
+	Node* local = head;
+
+	for (int R = 0; R < keySize; R++) {
+		DEBUG("Getting pos");
+		int pos = (int) hash[R];
+		DEBUG("Got pos");
+
+		Node* node = getNode(local, pos);
+		DEBUG("Got node");
+
+		if (node == nullptr) {
+			DEBUG("is null");
+			return false;
+		} else if (isMarked(node)) {
+			DEBUG("is marked node");
+			local = expandTable(local, pos, node, R);
+		} else if (!isArrayNode(node)) {
+				DEBUG("is NOT array node");
+				if (hashEqual(dynamic_cast<DataNode*>(node)->getHash(), dynamic_cast<DataNode*>(insertThis)->getHash(), keySize)) {
+					DEBUG("Hash equal");
+					if (atomic_compare_exchange_weak(dynamic_cast<ArrayNode*>(local)->array + pos, &node, nullptr)) {
+						DEBUG("CAS Successful. Deleting node");
+						delete node;
+						return true;
+					} else {
+						DEBUG("CAS failed.");
+						Node* node2 = getNode(local, pos);
+						DEBUG("Got node 2");
+						if (isMarked(node2) ^ unmarkedEqual(node2, node, keySize)) {
+							local = expandTable(local, pos, node, R);
+						} else if (isArrayNode(node2)) {
+								continue;
+						} else {
+								return true;
+						}
+					}
+				} else {
+						return false;
+				}
+		} else {
+				local = node;
+		}
+	}
+}
