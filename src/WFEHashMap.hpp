@@ -19,6 +19,7 @@ public:
 
 	bool put(char* key, int value);
 	bool remove(char* key);
+	int* get(char* key);
 };
 
 #endif
