@@ -36,6 +36,7 @@ bool WFEHashMap::put(char* key, int value) {
 					DEBUG("Successful CAS");
 					return true;
 				} else {
+					DEBUG("Failed CAS");
 					node = getNode(local, pos);
 					if (isArrayNode(node)) {
 						DEBUG("is array node: 2");
@@ -45,7 +46,7 @@ bool WFEHashMap::put(char* key, int value) {
 						DEBUG("is marked node: 2");
 						local = expandTable(local, pos, node, R);
 						break;
-					} else if (hashEqual(dynamic_cast<DataNode*>(node)->getHash(), dynamic_cast<DataNode*>(insertThis)->getHash(), keySize)) {
+					} else if (node != nullptr && hashEqual(dynamic_cast<DataNode*>(node)->getHash(), dynamic_cast<DataNode*>(insertThis)->getHash(), keySize)) {
 						DEBUG("Hashes are equal. Deleting insertThis");
 						delete insertThis;
 						return true;
