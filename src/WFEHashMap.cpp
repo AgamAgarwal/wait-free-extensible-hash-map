@@ -48,29 +48,39 @@ public:
 					local = expandTable(local, pos, node, R);
 					break;
 				} else if (node == nullptr) {
+					DEBUG("is null");
 					if (atomic_compare_exchange_weak(dynamic_cast<ArrayNode*>(local)->array + pos, &NULL_NODE, insertThis)) {
+						DEBUG("Successful CAS");
 						return true;
 					} else {
 						node = getNode(local, pos);
 						if (isArrayNode(node)) {
+							DEBUG("is array node: 2");
 							local = node;
 							break;
 						} else if (isMarked(node)) {
+							DEBUG("is marked node: 2");
 							local = expandTable(local, pos, node, R);
 							break;
 						} else if (hashEqual(dynamic_cast<DataNode*>(node)->getKey(), dynamic_cast<DataNode*>(insertThis)->getKey(), keySize)) {
+							DEBUG("Hashes are equal. Deleting insertThis");
 							delete insertThis;
 							return true;
 						} else {
+							DEBUG("fail");
 							failCount++;
 						}
 					}
 				} else {
+					DEBUG("first else");
 					if(hashEqual(dynamic_cast<DataNode*>(node)->getKey(), dynamic_cast<DataNode*>(insertThis)->getKey(), keySize)) {
+						DEBUG("Hash equal");
 						if (atomic_compare_exchange_weak(dynamic_cast<ArrayNode*>(local)->array + pos, &node, insertThis)) {
+							DEBUG("CAS Successful. Deleting old node");
 							delete node;
 							return true;
 						} else {
+							DEBUG("CAS failed.");
 							Node* node2 = getNode(local, pos);
 							if (isArrayNode(node2)) {
 								local = node2;

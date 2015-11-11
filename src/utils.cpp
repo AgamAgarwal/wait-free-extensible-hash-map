@@ -26,14 +26,13 @@ Node* getNode(Node* node, int pos) {
 
 bool isArrayNode(Node* node) {
 	DEBUG("Checking if array node");
-	ArrayNode* x = dynamic_cast<ArrayNode*>(node);
-	DEBUG("Converted to Array Node");
-	DEBUG(x == nullptr);
 	return dynamic_cast<ArrayNode*>(node) != nullptr;
 }
 
 bool isMarked(Node* node) {
-	return dynamic_cast<DataNode*>(node)->marked;
+	DEBUG("Checking if marked");
+	DataNode* x = dynamic_cast<DataNode*>(node);
+	return (x!=nullptr) && (x->marked);
 }
 
 ArrayNode* expandTable(Node* outerNode, int pos, Node* innerNode, int R) {
