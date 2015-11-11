@@ -13,6 +13,7 @@ public:
 	bool marked;
 
 	DataNode(char* _key, int _value);
+	DataNode(const DataNode&);
 	char* getKey();
 	char* getHash();
 };

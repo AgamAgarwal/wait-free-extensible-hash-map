@@ -1,8 +1,6 @@
 #include <atomic>
 #include "utils.hpp"
 
-using namespace std;
-
 Node* NULL_NODE = nullptr;
 
 char* hashKey(char* key) {
@@ -21,7 +19,7 @@ void markDataNode(Node* node, int pos) {
 }
 
 Node* getNode(Node* node, int pos) {
-	return dynamic_cast<ArrayNode*>(node)->array[pos];
+	return dynamic_cast<ArrayNode*>(node)->array[pos].load();
 }
 
 bool isArrayNode(Node* node) {
@@ -37,9 +35,10 @@ bool isMarked(Node* node) {
 
 ArrayNode* expandTable(Node* outerNode, int pos, Node* innerNode, int R) {
 	ArrayNode* arrayNode = dynamic_cast<ArrayNode*>(outerNode);
-	DataNode* dataNode = dynamic_cast<DataNode*>(innerNode);
+	DataNode* dataNode = new DataNode(*(dynamic_cast<DataNode*>(innerNode)));
 	ArrayNode* table = new ArrayNode(ARRAY_LENGTH);
-	table->array[(int)dataNode->getKey()[R+1]] = dataNode;
+	DEBUG("Expanding at level "<<R);
+	table->array[(int)dataNode->getKey()[R+1]].store(dataNode);
 	bool res = atomic_compare_exchange_weak(arrayNode->array + pos, &innerNode, dynamic_cast<Node*>(table));
 	DEBUG("CAS result "<<res);
 	return arrayNode;
@@ -56,5 +55,5 @@ bool hashEqual(char* a, char* b, int size) {
 bool unmarkedEqual(Node* x, Node* y, int size) {
 	DataNode* a = dynamic_cast<DataNode*>(x);
 	DataNode* b = dynamic_cast<DataNode*>(y);
-	return !b->marked && (a->value == b->value) && hashEqual(a->getKey(), b->getKey(), size);
+	return (a != nullptr) && (b != nullptr) && !b->marked && (a->value == b->value) && hashEqual(a->getKey(), b->getKey(), size);
 }
