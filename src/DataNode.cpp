@@ -1,25 +1,15 @@
-#ifndef _DATA_NODE_H_
-#define _DATA_NODE_H_
+#include "DataNode.hpp"
 
-#include "Node.cpp"
-#include <iostream>
+DataNode::DataNode(char* _key, int _value) {
+	key = _key;
+	hash = hashKey(key);
+	value = _value;
+}
 
-class DataNode: public Node {
-private:
-	char* key;
-public:
-	int value;
-	bool marked;
+char* DataNode::getKey() {
+	return key;
+}
 
-	DataNode(char* _key, int _value) {
-		key = _key;
-		value = _value;
-		std::cout<<"data node constructor"<<std::endl;
-	}
-
-	char* getKey() {
-		return key;
-	}
-};
-
-#endif
+char* DataNode::getHash() {
+	return hash;
+}

@@ -1,9 +1,9 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include "Node.cpp"
-#include "DataNode.cpp"
-#include "ArrayNode.cpp"
+#include "Node.hpp"
+#include "DataNode.hpp"
+#include "ArrayNode.hpp"
 
 #ifdef DEBUG_H
 #include <iostream>

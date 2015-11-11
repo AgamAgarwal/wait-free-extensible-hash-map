@@ -1,9 +1,3 @@
-#ifndef _NODE_H_
-#define _NODE_H_
+#include "Node.hpp"
 
-class Node {
-public:
-	virtual void dummy() {}
-};
-
-#endif
+void Node::dummy() {}

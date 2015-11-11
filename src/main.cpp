@@ -1,5 +1,5 @@
 #include <string>
-#include "WFEHashMap.cpp"
+#include "WFEHashMap.hpp"
 
 using namespace std;
 

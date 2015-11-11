@@ -1,18 +1,5 @@
-#ifndef _ARRAY_NODE_H_
-#define _ARRAY_NODE_H_
+#include "ArrayNode.hpp"
 
-#include <atomic>
-#include "Node.cpp"
-
-using namespace std;
-
-class ArrayNode: public Node {
-public:
-	atomic<Node*>* array;
-
-	ArrayNode(int size) {
-		array = new atomic<Node*>[size];
-	}
-};
-
-#endif
+ArrayNode::ArrayNode(int size) {
+	array = new std::atomic<Node*>[size];
+}
