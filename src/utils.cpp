@@ -42,6 +42,7 @@ ArrayNode* expandTable(Node* outerNode, int pos, Node* innerNode, int R) {
 	table->array[(int)dataNode->getKey()[R+1]] = dataNode;
 	bool res = atomic_compare_exchange_weak(arrayNode->array + pos, &innerNode, dynamic_cast<Node*>(table));
 	DEBUG("CAS result "<<res);
+	return arrayNode;
 }
 
 bool hashEqual(char* a, char* b, int size) {
