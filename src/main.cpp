@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#define KEY_POOL_SIZE 50
+#define KEY_POOL_SIZE 5
 #define KEY_POOL_MIN_LENGTH 8
 #define KEY_SIZE 10
 
