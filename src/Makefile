@@ -12,6 +12,7 @@ debug: all
 
 $(TARGET): $(FILES)
 	$(CC) $(CFLAGS) $^ -o $@
+	mkdir -p output
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $^ -o $@
