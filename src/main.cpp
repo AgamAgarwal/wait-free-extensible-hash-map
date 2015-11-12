@@ -5,6 +5,7 @@
 #include <thread>
 #include <random>
 #include <chrono>
+#include <unistd.h>
 
 #include "HashMap.hpp"
 #include "WFEHashMap.hpp"
