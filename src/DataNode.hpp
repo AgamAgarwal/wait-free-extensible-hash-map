@@ -16,6 +16,7 @@ public:
 
 	DataNode(std::string _key, int _value, int _keySize);
 	DataNode(const DataNode&);
+	~DataNode();
 	std::string getKey();
 	char* getHash();
 };

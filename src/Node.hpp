@@ -3,7 +3,7 @@
 
 class Node {
 public:
-	virtual void dummy();
+	virtual ~Node();
 };
 
 #endif

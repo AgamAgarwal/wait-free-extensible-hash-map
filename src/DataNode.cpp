@@ -17,6 +17,10 @@ DataNode::DataNode(const DataNode& dataNode) {
 	marked = false;
 }
 
+DataNode::~DataNode() {
+	delete hash;
+}
+
 std::string DataNode::getKey() {
 	return key;
 }

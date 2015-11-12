@@ -1,3 +1,3 @@
 #include "Node.hpp"
 
-void Node::dummy() {}
+Node::~Node() {}

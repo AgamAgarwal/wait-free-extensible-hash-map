@@ -9,6 +9,7 @@ public:
 	std::atomic<Node*>* array;
 
 	ArrayNode(int size);
+	~ArrayNode();
 };
 
 #endif
