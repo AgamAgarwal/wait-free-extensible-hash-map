@@ -4,13 +4,14 @@
 #include <atomic>
 #include <string>
 
+#include "HashMap.hpp"
 #include "DataNode.hpp"
 #include "ArrayNode.hpp"
 #include "utils.hpp"
 
 #define MAX_FAIL_COUNT 10
 
-class WFEHashMap {
+class WFEHashMap: public HashMap {
 private:
 	Node* head;
 	const int keySize;
