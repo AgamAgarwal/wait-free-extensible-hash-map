@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 #include <thread>
+#include <random>
 
 #include "WFEHashMap.hpp"
 
@@ -12,38 +13,70 @@ using namespace std;
 #define NUM_REMOVERS 10
 #define ITER 10
 
-void putter(WFEHashMap *hm, int me) {
-	string a = "abcde";
+#define KEY_POOL_SIZE 50
+#define KEY_POOL_MIN_LENGTH 10
+#define KEY_SIZE 10
 
+default_random_engine generator(chrono::system_clock::now().time_since_epoch().count());
+vector<string> keyPool;
+
+string generateRandomString(int length) {
+	static const char alphanum[] =
+		"0123456789"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"abcdefghijklmnopqrstuvwxyz";
+	static uniform_int_distribution<int> distribution(0, sizeof(alphanum) - 1);
+
+	string s = "";
+
+	for (int i = 0; i < length; i++)
+		s += alphanum[distribution(generator)];
+
+	return s;
+}
+
+void generateKeyPool(int minLength, int maxLength, int size) {
+	uniform_int_distribution<int> distribution(minLength, maxLength);
+	for (int i = 0; i < size; i++) {
+		keyPool.push_back(generateRandomString(distribution(generator)));
+	}
+}
+
+string getRandomKey() {
+	static uniform_int_distribution<int> distribution(0, KEY_POOL_SIZE - 1);
+	return keyPool[distribution(generator)];
+}
+
+void putter(WFEHashMap *hm, int me) {
 	for (int i = 0; i < ITER; i++) {
-		hm->put(a, 9);
+		string key = getRandomKey();
+		hm->put(key, 9);
 	}
 }
 
 void getter(WFEHashMap *hm, int me) {
-	string a = "abcde";
-
 	for (int i = 0; i < ITER; i++) {
+		string key = getRandomKey();
 		int* r;
-		r = hm->get(a);
+		r = hm->get(key);
 		if (r == nullptr)
-			cout<<-1<<endl;
+			cout<<key<<" : NULL"<<endl;
 		else
-			cout<<(*r)<<endl;
+			cout<<key<<" : "<<(*r)<<endl;
 	}
 }
 
 void remover(WFEHashMap *hm, int me) {
-	string a = "abcde";
-
 	for (int i = 0; i < ITER; i++) {
-		cout<<"Remove status: "<<hm->remove(a)<<endl;
+		string key = getRandomKey();
+		cout<<"Removed "<<key<<hm->remove(key)<<endl;
 	}
 }
 
 int main() {
-	WFEHashMap *x = new WFEHashMap(5);
+	generateKeyPool(KEY_POOL_MIN_LENGTH, KEY_SIZE, KEY_POOL_SIZE);
 
+	WFEHashMap *x = new WFEHashMap(KEY_SIZE);
 
 	thread* putters[NUM_PUTTERS];
 
