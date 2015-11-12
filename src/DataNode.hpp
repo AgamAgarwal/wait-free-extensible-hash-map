@@ -1,20 +1,22 @@
 #ifndef _DATA_NODE_H_
 #define _DATA_NODE_H_
 
+#include <string>
 #include "Node.hpp"
 #include "utils.hpp"
 
 class DataNode: public Node {
 private:
-	char* key;
+	std::string key;
 	char* hash;
+	int keySize;
 public:
 	int value;
 	bool marked;
 
-	DataNode(char* _key, int _value);
+	DataNode(std::string _key, int _value, int _keySize);
 	DataNode(const DataNode&);
-	char* getKey();
+	std::string getKey();
 	char* getHash();
 };
 

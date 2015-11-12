@@ -16,9 +16,9 @@
 
 extern Node* NULL_NODE;
 
-char* hashKey(char*);
+char* hashKey(std::string, int);
 
-Node* allocateNode(int, char*);
+Node* allocateNode(int, std::string, int);
 
 void markDataNode(Node*, int);
 

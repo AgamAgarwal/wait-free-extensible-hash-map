@@ -4,9 +4,9 @@ WFEHashMap::WFEHashMap(int _keySize): keySize(_keySize) {
 	head = new ArrayNode(ARRAY_LENGTH);
 }
 
-bool WFEHashMap::put(char* key, int value) {
-	char* hash = hashKey(key);
-	Node* insertThis = allocateNode(value, hash);
+bool WFEHashMap::put(std::string key, int value) {
+	char* hash = hashKey(key, keySize);
+	Node* insertThis = allocateNode(value, key, keySize);
 	DEBUG("Node allocated");
 	Node* local = head;
 
@@ -92,8 +92,8 @@ bool WFEHashMap::put(char* key, int value) {
 	return false;
 }
 
-bool WFEHashMap::remove(char* key) {
-	char* hash = hashKey(key);
+bool WFEHashMap::remove(std::string key) {
+	char* hash = hashKey(key, keySize);
 	Node* local = head;
 
 	for (int R = 0; R < keySize; R++) {
@@ -140,8 +140,8 @@ bool WFEHashMap::remove(char* key) {
 	return false;
 }
 
-int* WFEHashMap::get(char* key) {
-	char* hash = hashKey(key);
+int* WFEHashMap::get(std::string key) {
+	char* hash = hashKey(key, keySize);
 	Node* local = head;
 
 	for (int R = 0; R < keySize; R += 1) {

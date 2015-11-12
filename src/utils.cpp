@@ -1,15 +1,18 @@
 #include <atomic>
+#include <cstring>
 #include "utils.hpp"
 
 Node* NULL_NODE = nullptr;
 
-char* hashKey(char* key) {
-	return key;
+char* hashKey(std::string key, int keySize) {
+	char* hash = new char[keySize + 1];
+	strncpy(hash, key.c_str(), keySize);
+	return hash;
 }
 
-Node* allocateNode(int value, char* hash) {
+Node* allocateNode(int value, std::string key, int keySize) {
 	DEBUG("allocating node");
-	return new DataNode(hash, value);
+	return new DataNode(key, value, keySize);
 }
 
 void markDataNode(Node* node, int pos) {
@@ -55,5 +58,5 @@ bool hashEqual(char* a, char* b, int size) {
 bool unmarkedEqual(Node* x, Node* y, int size) {
 	DataNode* a = dynamic_cast<DataNode*>(x);
 	DataNode* b = dynamic_cast<DataNode*>(y);
-	return (a != nullptr) && (b != nullptr) && !b->marked && (a->value == b->value) && hashEqual(a->getKey(), b->getKey(), size);
+	return (a != nullptr) && (b != nullptr) && !b->marked && (a->value == b->value) && hashEqual(a->getHash(), b->getHash(), size);
 }

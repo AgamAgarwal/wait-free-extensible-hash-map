@@ -1,21 +1,23 @@
 #include "DataNode.hpp"
 #include <string>
 
-DataNode::DataNode(char* _key, int _value) {
+DataNode::DataNode(std::string _key, int _value, int _keySize) {
 	key = _key;
-	hash = hashKey(key);
+	keySize = _keySize;
+	hash = hashKey(key, keySize);
 	value = _value;
 	marked = false;
 }
 
 DataNode::DataNode(const DataNode& dataNode) {
 	key = dataNode.key;
-	hash = hashKey(key);
+	keySize = dataNode.keySize;
+	hash = hashKey(key, keySize);
 	value = dataNode.value;
 	marked = false;
 }
 
-char* DataNode::getKey() {
+std::string DataNode::getKey() {
 	return key;
 }
 

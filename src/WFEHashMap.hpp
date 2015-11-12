@@ -2,6 +2,7 @@
 #define _WFE_HASH_MAP_H_
 
 #include <atomic>
+#include <string>
 
 #include "DataNode.hpp"
 #include "ArrayNode.hpp"
@@ -17,9 +18,9 @@ private:
 public:
 	WFEHashMap(int _keySize);
 
-	bool put(char* key, int value);
-	bool remove(char* key);
-	int* get(char* key);
+	bool put(std::string key, int value);
+	bool remove(std::string key);
+	int* get(std::string key);
 };
 
 #endif
