@@ -14,22 +14,18 @@ using namespace std;
 
 void putter(WFEHashMap *hm, int me) {
 	string a = "abcde";
-	char *b = new char[6];
-	strcpy(b, a.c_str());
 
 	for (int i = 0; i < ITER; i++) {
-		hm->put(b, 9);
+		hm->put(a, 9);
 	}
 }
 
 void getter(WFEHashMap *hm, int me) {
 	string a = "abcde";
-	char *b = new char[6];
-	strcpy(b, a.c_str());
 
 	for (int i = 0; i < ITER; i++) {
 		int* r;
-		r = hm->get(b);
+		r = hm->get(a);
 		if (r == nullptr)
 			cout<<-1<<endl;
 		else
@@ -39,11 +35,9 @@ void getter(WFEHashMap *hm, int me) {
 
 void remover(WFEHashMap *hm, int me) {
 	string a = "abcde";
-	char *b = new char[6];
-	strcpy(b, a.c_str());
 
 	for (int i = 0; i < ITER; i++) {
-		cout<<"Remove status: "<<hm->remove(b)<<endl;
+		cout<<"Remove status: "<<hm->remove(a)<<endl;
 	}
 }
 
